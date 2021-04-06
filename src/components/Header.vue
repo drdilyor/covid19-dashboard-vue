@@ -1,0 +1,11 @@
+<template>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <a class="navbar-brand text-success" routerLink="/"><b>COVID19-Dashboard</b></a>
+  </nav>
+</template>
+
+<script>
+export default {
+  
+}
+</script>

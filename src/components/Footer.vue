@@ -1,0 +1,21 @@
+<template>
+  <footer class="text-center p-2">
+    <p class="m-0">&copy; Dilyorbek Valijonov (drdilyor)</p>
+    <p>
+      <a href="https://github.com/drdilyor/covid19-dashboard" target="_blank">
+        <i class="fa fa-github"></i>
+        GitHub
+      </a>
+      <a href="https://t.me/drdilyor" target="_blank">
+        <i class="fa fa-telegram"></i>
+        Telegram
+      </a>
+    </p>
+  </footer>
+</template>
+
+<script>
+export default {
+  
+}
+</script>
