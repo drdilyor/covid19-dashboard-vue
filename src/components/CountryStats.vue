@@ -1,7 +1,12 @@
 <template>
   <div class="container">
-    <div class="col text-center">
-      <h2>Stats by Country</h2>
+    <div class="row pb-2">
+      <div class="col text-center text-md-left">
+        <h2>Stats by Country</h2>
+      </div> 
+      <div class="col-12 col-md-4">
+        <input class="form-control" type="text" v-model="searchTerm" placeholder="Search countries">
+      </div>
     </div>
     <table class="table table-bordered country-stats">
       <thead>
@@ -59,17 +64,23 @@
 <script>
 export default {
   data() { return {
-    countryStats: [],
+    allStats: [],
+    searchTerm: '',
   } },
-  methods: {
-    log(i) {
-      console.log(i)
+  computed: {
+    statsFilterSearch() {
+      return this.allStats.filter(
+        stat => stat.country.toLowerCase().includes(this.searchTerm.toLowerCase())
+      )
+    },
+    countryStats() {
+      return this.statsFilterSearch
     }
   },
   created() {
     fetch('https://disease.sh/v3/covid-19/countries')
     .then(resp => resp.json())
-    .then(data => this.countryStats = data)
+    .then(data => t.allStats = data)
   }
 }
 </script>
