@@ -4,8 +4,14 @@
       <div class="col text-center text-md-left">
         <h2>Stats by Country</h2>
       </div> 
-      <div class="col-12 col-md-4">
+      <div class="col-12 col-md-4 input-group">
         <input class="form-control" type="text" v-model="searchTerm" placeholder="Search countries">
+        <select v-model="sortBy">
+          <option value="country" selected>Country</option>
+          <option value="-cases">Sort by cases</option>
+          <option value="-active">Sort by active</option>
+          <option value="-deaths">Sort by deaths</option>
+        </select>
       </div>
     </div>
     <table class="table table-bordered country-stats">
@@ -27,13 +33,13 @@
         <th scope="col">Population</th>
       </tr>
       </thead>
-      <tbody class="text-right">
+      <tbody class="text-right" @click="aAsRouterLink">
       <tr v-for="(countryStat, i) in countryStats" :key="i" :class="{'bg-green': countryStat.active == 0}">
         <th class="text-muted font-weight-normal" scope="row">
           {{ i + 1 }}
         </th>
         <td class="text-left">
-          <router-link :to="'/country/'+countryStat.countryInfo.iso3">{{ countryStat.country }}</router-link>
+          <a :href="'/country/'+countryStat.countryInfo.iso3">{{ countryStat.country }}</a>
         </td>
         <td>{{ countryStat.cases | number }}</td>
         <td :class="{'bg-warning': countryStat.todayCases > 0}">
@@ -66,6 +72,7 @@ export default {
   data() { return {
     allStats: [],
     searchTerm: '',
+    sortBy: 'country',
   } },
   computed: {
     statsFilterSearch() {
@@ -73,14 +80,33 @@ export default {
         stat => stat.country.toLowerCase().includes(this.searchTerm.toLowerCase())
       )
     },
+    statsSorted() {
+      const desc = this.sortBy[0] === '-';
+      const sortBy = desc ? this.sortBy.slice(1) : this.sortBy;
+      const res = this.statsFilterSearch
+      res.sort((aObj, bObj) => {
+        const a = aObj[sortBy];
+        const b = bObj[sortBy];
+        return desc ? ((a > b) ? -1 : (a < b) ? 1 : 0) : (a > b) ? 1 : (a < b) ? -1 : 0;
+      });
+      return res
+    },
     countryStats() {
-      return this.statsFilterSearch
+      return this.statsSorted
+    }
+  },
+  methods: {
+    aAsRouterLink(e) {
+      if (e.target.tagName !== 'A') return 
+      e.preventDefault()
+      const url = e.target.getAttribute('href')
+      this.$router.push(url)
     }
   },
   created() {
     fetch('https://disease.sh/v3/covid-19/countries')
     .then(resp => resp.json())
-    .then(data => t.allStats = data)
+    .then(data => this.allStats = data)
   }
 }
 </script>
