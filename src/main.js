@@ -7,6 +7,8 @@ import App from './App.vue'
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
 import moment from 'moment'
 
+import router from './router'
+
 Vue.config.productionTip = false
 // Vue.use(BootstrapVue)
 
@@ -18,5 +20,6 @@ Vue.filter('date', function(date) {
 })
 
 new Vue({
-  render: h => h(App),
+  router,
+  render: h => h(App)
 }).$mount('#app')

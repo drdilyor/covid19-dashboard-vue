@@ -28,7 +28,7 @@
           {{ i + 1 }}
         </th>
         <td class="text-left">
-          <a href="#!">{{ countryStat.country }}</a>
+          <router-link :to="'/country/'+countryStat.countryInfo.iso3">{{ countryStat.country }}</router-link>
         </td>
         <td>{{ countryStat.cases | number }}</td>
         <td :class="{'bg-warning': countryStat.todayCases > 0}">
